@@ -1,2 +1,2 @@
 # ColorEcho
- Library and Tools For Colorized Output in BASH
+ Library and Tools For Colorized BASH Output
