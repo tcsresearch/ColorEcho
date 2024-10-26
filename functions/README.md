@@ -9,3 +9,5 @@
 <br> &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp; we should be able to use:
 <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; ``` cecho --red "This Text is Red." ```
+<br>
+Currenty we can use NewCecho to do this.
