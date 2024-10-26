@@ -13,7 +13,11 @@
 ### TODO
 <hr>
 
-#### Convert each item to a passable cmdline parameter.
+<ul>
+
+<li> Rename NewCecho as Cecho. </li>
+<li> Rename AdvCecho_ Functions as Cecho_ Functions. </li>
+<li> Convert each item to a passable cmdline parameter.
 
 &emsp; Example: &nbsp; Instead of using:
 <br>
@@ -24,3 +28,4 @@
 <br>
 <br>
     &emsp; Currenty we can use NewCecho and AdvCecho to do this.
+</li>
