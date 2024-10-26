@@ -1,3 +1,13 @@
+### Functions
+<ul>
+    <li> NewCecho</li>
+    <li> AdvCecho</li>
+    <li> AdvCecho_Bold</li>
+    <li> AdvCecho_Underline</li>
+    <li> AdvCecho_Background</li>
+    <li> AdvCecho_HighIntensity</li>
+    <li> AdvCecho_HighIntensityBackground</li>
+</ul>
 ### TODO
 <hr>
 
