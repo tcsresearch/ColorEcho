@@ -10,4 +10,4 @@
 <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; ``` cecho --red "This Text is Red." ```
 <br>
-Currenty we can use NewCecho to do this.
+Currenty we can use NewCecho and AdvCecho to do this.
