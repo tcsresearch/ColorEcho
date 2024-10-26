@@ -1,0 +1,42 @@
+#/bin/bash
+## AdvCecho_HighIntensityBackground is NewCecho with added colors.
+# TODO: Determine regular vs bold, e.g: 0;31 vs 1;31
+#	Add Underline/Background/High_Intensity/Bold_High_Intensity/High_Intensity_Backgrounds
+
+advcecho_HighIntensityBackground() {
+        local code="\033["
+        case "$1" in
+                black  | bk) color="${code}0;100m";;
+                red    |  r) color="${code}0;101m";; 
+                green  |  g) color="${code}0;102m";; 
+                yellow |  y) color="${code}0;103m";; 
+                blue   |  b) color="${code}0;104m";; 
+                purple |  p) color="${code}0;105m";; 
+                cyan   |  c) color="${code}0;106m";; 
+                white  |  w) color="${code}0;107m";; # is this color white or gray?
+                gray   | gr) color="${code}0;107m";; # same as white - for now.
+                grey   | gr) color="${code}0;107m";; # alias of gray.
+                
+	#### Default case.
+             #   *) local text="$1"
+             *) local text="Usage: advcecho_HighIntensityBackground <color> <text> - text must be inside double quotes."
+        esac
+        [ -z "$text" ] && local text="$color$2${code}0m"
+        echo -e "$text"
+}
+
+### Test Display - WORKS!! ###
+function DisplayTest() {
+advcecho_HighIntensityBackground b "This is blue"
+advcecho_HighIntensityBackground r "This is red"
+advcecho_HighIntensityBackground yellow "This is yellow"
+advcecho_HighIntensityBackground white "This is white"
+advcecho_HighIntensityBackground gray "This is gray"
+}
+
+### Usage ###
+function Usage() {
+echo "advcecho_HighIntensityBackground <color> <text>"
+echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/gray"
+echo "and <text> is what you want to be echoed."
+}
