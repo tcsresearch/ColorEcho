@@ -1,13 +1,15 @@
 ### Functions
+<hr>
 <ul>
-    <li> NewCecho</li>
-    <li> AdvCecho</li>
-    <li> AdvCecho_Bold</li>
-    <li> AdvCecho_Underline</li>
-    <li> AdvCecho_Background</li>
-    <li> AdvCecho_HighIntensity</li>
-    <li> AdvCecho_HighIntensityBackground</li>
+    <li> NewCecho - Current Cecho Implementation. </li>
+    <li> AdvCecho - NewCecho with white color added and grey as an alias of gray. </li>
+    <li> AdvCecho_Bold - AdvCecho Bold. </li>
+    <li> AdvCecho_Underline - AdvCecho Underline. </li>
+    <li> AdvCecho_Background - AdvCecho Background. </li>
+    <li> AdvCecho_HighIntensity - High Intensity AdvCecho. </li>
+    <li> AdvCecho_HighIntensityBackground - High Intensity Background AdvCecho. </li>
 </ul>
+
 ### TODO
 <hr>
 
