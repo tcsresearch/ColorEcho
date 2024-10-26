@@ -1,0 +1,42 @@
+#/bin/bash
+## AdvCecho_Underline is NewCecho with added colors.
+# TODO: Determine regular vs bold, e.g: 0;31 vs 1;31
+#	Add Underline/Background/High_Intensity/Bold_High_Intensity/High_Intensity_Backgrounds
+
+advcecho_Underline() {
+        local code="\033["
+        case "$1" in
+                black  | bk) color="${code}40m";;
+                red    |  r) color="${code}41m";; 
+                green  |  g) color="${code}42m";; 
+                yellow |  y) color="${code}43m";; 
+                blue   |  b) color="${code}44m";; 
+                purple |  p) color="${code}45m";; 
+                cyan   |  c) color="${code}46m";; 
+                white  |  w) color="${code}47m";; # is this color white or gray?
+                gray   | gr) color="${code}47m";; # same as white - for now.
+                grey   | gr) color="${code}47m";; # alias of gray.
+                
+	#### Default case.
+             #   *) local text="$1"
+             *) local text="Usage: advcecho_Background <color> <text> - text must be inside double quotes."
+        esac
+        [ -z "$text" ] && local text="$color$2${code}0m"
+        echo -e "$text"
+}
+
+### Test Display - WORKS!! ###
+function DisplayTest() {
+advcecho_Background b "This is blue"
+advcecho_Background r "This is red"
+advcecho_Background yellow "This is yellow"
+advcecho_Background white "This is white"
+advcecho_Background gray "This is gray"
+}
+
+### Usage ###
+function Usage() {
+echo "advcecho_Background <color> <text>"
+echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/gray"
+echo "and <text> is what you want to be echoed."
+}
