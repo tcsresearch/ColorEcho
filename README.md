@@ -17,6 +17,9 @@
 <hr>
 
 <p>
+Update 11/22/2024: An updated NewCecho.bfunc has been added which greatly improves on the Usage() function. <br>
+</p>
+<p>
 Update 06/15/2024: A NewCecho.bfunc has been added which will supercede our original code. <br>
  <ul><i>
  It is far simpler and appears to work, but requires further testing and some new features. The main drawback is loss of ability to use multiple colors on the same line. 
