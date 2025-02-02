@@ -9,11 +9,11 @@
 <hr>
 
 > [!WARNING]
-> This code is highly experiemental and has NOT been fully implemented or tested yet.
+> This code is highly experiemental and has NOT been fully implemented or tested.
 > <hr>
 
 > [!IMPORTANT]
-> Testing has NOT been done yet, is NOT suitable for testing, and still lacks most features.
+> Code is NOT suitable for production, and still lacks most features.
 <hr>
 
 <p>
