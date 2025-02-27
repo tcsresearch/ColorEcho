@@ -2,6 +2,7 @@
 ## AdvCecho is NewCecho with added colors.
 # TODO: Determine regular vs bold, e.g: 0;31 vs 1;31
 #	Add Underline/Background/High_Intensity/Bold_High_Intensity/High_Intensity_Backgrounds
+# 	Portions Taken From: https://gkarthiks.github.io/quick-commands-cheat-sheet/bash_command.html
 
 advcecho() {
         local code="\033["
@@ -33,12 +34,13 @@ advcecho b "This is blue"
 advcecho r "This is red"
 advcecho yellow "This is yellow"
 advcecho white "This is white"
-advcecho gray "This is gray"
+advcecho lightgray "This is lightgray"
+advcecho darkgray "This is darkgray"
 }
 
 ### Usage ###
 function Usage() {
 echo "advcecho <color> <text>"
-echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/gray"
+echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/white/lightgray/darkgray"
 echo "and <text> is what you want to be echoed."
 }
