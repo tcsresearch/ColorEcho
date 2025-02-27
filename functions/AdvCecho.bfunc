@@ -13,9 +13,11 @@ advcecho() {
                 blue   |  b) color="${code}0;34m";; 
                 purple |  p) color="${code}0;35m";; 
                 cyan   |  c) color="${code}0;36m";; 
-                white  |  w) color="${code}0;37m";; # is this color white or gray?
-                gray   | gr) color="${code}0;37m";; # same as white - for now.
-                grey   | gr) color="${code}0;37m";; # alias of gray.
+                white  |  w) color="${code}1;37m";; # is this color white or gray?
+                lightgray   | gr) color="${code}0;37m";; # same as white - for now.
+                lightgrey   | gr) color="${code}0;37m";; # alias of gray.
+		darkgray   | gr) color="${code}1;30m";; # same as white - for now.
+                darkgrey   | gr) color="${code}1;30m";; # alias of gray.
                 
 	#### Default case.
              #   *) local text="$1"
