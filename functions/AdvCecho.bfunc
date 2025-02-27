@@ -3,7 +3,7 @@
 # TODO: Determine regular vs bold, e.g: 0;31 vs 1;31
 #	Add Underline/Background/High_Intensity/Bold_High_Intensity/High_Intensity_Backgrounds
 # 	Portions Taken From: https://gkarthiks.github.io/quick-commands-cheat-sheet/bash_command.html
-
+#	Additional Portions To Be Added From: https://github.com/gkarthiks/quick-commands-cheat-sheet/blob/main/bash_command.md
 advcecho() {
         local code="\033["
         case "$1" in
