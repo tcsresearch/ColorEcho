@@ -17,6 +17,10 @@
 <hr>
 
 <p>
+Update 02/27/2025: An updated AdvCecho.bfunc with several additional supported colors. <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This may soon become the default Cecho function but remains in testing for now. <br>
+</p>
+<p>
 Update 11/22/2024: An updated NewCecho.bfunc has been added which greatly improves on the Usage() function. <br>
 </p>
 <p>
