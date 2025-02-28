@@ -18,7 +18,9 @@ advcecho() {
 		lightblue	|  lb) color="${code}1;34m";;
                 purple 		|  p) color="${code}0;35m";; 
 		lightpurple	|  lp) color="${code}1;35m";;
-                white  		|  w) color="${code}1;37m";; # is this color white or gray?
+		cyan		|  lp) color="${code}0;36m";;
+                lightcyan	|  lp) color="${code}1;36m";;
+		white  		|  w) color="${code}1;37m";; # is this color white or gray?
                 lightgray   	| gr) color="${code}0;37m";; # same as white - for now.
                 lightgrey   	| lgr) color="${code}0;37m";; # alias of gray.
 		darkgray   	| dgr) color="${code}1;30m";; # same as white - for now.
@@ -45,6 +47,6 @@ advcecho darkgray "This is darkgray"
 ### Usage ###
 function Usage() {
 echo "advcecho <color> <text>"
-echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/white/lightgray/darkgray"
+echo "Where <color> is one of black/red/lightred/green/lightgreen/brownorage/yellow/blue/lightblue/purple/lightpurple/cyan/lightcyan/white/lightgray/darkgray"
 echo "and <text> is what you want to be echoed."
 }
