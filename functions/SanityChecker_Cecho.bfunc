@@ -1,0 +1,16 @@
+## Confirm Cecho is enabled. ##
+# TODO: Can we change the Error and exit lines to call the EnableCecho function instead? 
+function IsCechoEnabled() {
+	if ! [ -x "$(command -v cecho)" ]; then
+	  echo 'Error: cecho is not installed.' >&2
+  	exit 1 # Will this accidentally exit BASH or tmux shell ? 
+	fi
+}
+
+## Enable Cecho if needed. ##
+function EnableCecho() {
+	if [ -x "$(command -v cecho)" ]; then
+		echo "Cecho Enabled."
+		echo " "
+	fi
+}
