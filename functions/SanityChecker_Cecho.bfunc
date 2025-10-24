@@ -6,9 +6,9 @@
 ## Setup Variables ##				  ##
 ########################################
 
-CechoDirectory="/etc/BLING"
-CechoFileName="Cecho.bfunc" # Needs updating when AdvCecho is implemented - use CechoDirectory.
-
+CechoDirectory="/etc/BLING"	 # Confirm proper directory.
+CechoFileName="Cecho.bfunc"  # Needs updating when AdvCecho is implemented - use CechoDirectory.
+Cecho_Alias_Status="Unknown" # Needs implementation.
 
 
 function IsCechoInstalled() {
@@ -48,14 +48,52 @@ function EnableCecho() {
 
 ### Swap echo with cecho if enabled. ###
 function Cecho_AliasOn() {
-	echo="cecho"
+	alias echo="cecho"
 	echo "Cecho as replacement for echo is ENABLED."
 	echo "To disable, run 'Cecho_AliasOff'
 }
 
 ### Revert back to normal echo operation without Cecho. ###
 function CechoAliasOff() {
-	echo="echo"
+	alias echo="echo"
 	echo "Cecho as replacement for echo is DISABLED."
 	echo "To disable, run 'Cecho_AliasOn'
+}
+
+
+
+########## Cecho Alias Master Function - WIP !!! ##########
+function Cecho_Alias() {
+  local on=""
+  local off=""
+s() {
+
+# Parse named arguments
+  while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+      --on)
+        on="$2"
+        shift 2
+        ;;
+      --off)
+        off="$2"
+        shift 2
+        ;;
+      --help)
+		echo "Cecho_Alias - Usage"
+		echo "Cecho_Alias --on will replace echo with cecho."
+		echo "Cecho_Alias --off will restore normal echo functionality."
+		echo " "
+		;;
+	  "default_action")
+        # Need to check status here.
+		type echo # Should confirm if echo is an alias set to cecho or not.
+		# echo "Cecho Alias is $Cecho_Alias_Status."
+		;;
+		*)
+        echo "Unknown option: $1"
+        return 1
+        ;;
+    esac
+  done
 }
