@@ -17,6 +17,10 @@
 <hr>
 
 <p>
+Update 10/23/2025: Major improvements to SanityChecker_Cecho.bfunc [UNTESTED]. <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Formatting and typo fixes for files in the 'functions' folder. <br>
+</p>
+<p>
 Update 02/27/2025: An updated AdvCecho.bfunc with several additional supported colors. <br>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This may soon become the default Cecho function but remains in testing for now. <br>
 </p>
