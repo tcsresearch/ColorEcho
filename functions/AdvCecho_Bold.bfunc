@@ -27,16 +27,16 @@ advcecho_Bold() {
 
 ### Test Display - WORKS!! ###
 function DisplayTest() {
-advcecho_Bold b "This is blue"
-advcecho_Bold r "This is red"
-advcecho_Bold yellow "This is yellow"
-advcecho_Bold white "This is white"
-advcecho_Bold gray "This is gray"
+	advcecho_Bold b "This is blue"
+	advcecho_Bold r "This is red"
+	advcecho_Bold yellow "This is yellow"
+	advcecho_Bold white "This is white"
+	advcecho_Bold gray "This is gray"
 }
 
 ### Usage ###
 function Usage() {
-echo "advcecho_Bold <color> <text>"
-echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/gray"
-echo "and <text> is what you want to be echoed."
+	echo "advcecho_Bold <color> <text>"
+	echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/gray"
+	echo "	and <text> is what you want to be echoed."
 }
