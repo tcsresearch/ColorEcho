@@ -27,16 +27,16 @@ advcecho_HighIntensityBackground() {
 
 ### Test Display - WORKS!! ###
 function DisplayTest() {
-advcecho_HighIntensityBackground b "This is blue"
-advcecho_HighIntensityBackground r "This is red"
-advcecho_HighIntensityBackground yellow "This is yellow"
-advcecho_HighIntensityBackground white "This is white"
-advcecho_HighIntensityBackground gray "This is gray"
+	advcecho_HighIntensityBackground b "This is blue"
+	advcecho_HighIntensityBackground r "This is red"
+	advcecho_HighIntensityBackground yellow "This is yellow"
+	advcecho_HighIntensityBackground white "This is white"
+	advcecho_HighIntensityBackground gray "This is gray"
 }
 
 ### Usage ###
 function Usage() {
-echo "advcecho_HighIntensityBackground <color> <text>"
-echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/gray"
-echo "and <text> is what you want to be echoed."
+	echo "advcecho_HighIntensityBackground <color> <text>"
+	echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/gray"
+	echo "	and <text> is what you want to be echoed."
 }
