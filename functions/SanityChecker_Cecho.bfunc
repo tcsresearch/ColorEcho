@@ -14,3 +14,9 @@ function EnableCecho() {
 		echo " "
 	fi
 }
+
+### Swap echo with cecho if enabled. ###
+## TODO: Needs Testing.  
+function SwapEchoWithCecho() {
+	echo="cecho"
+}
