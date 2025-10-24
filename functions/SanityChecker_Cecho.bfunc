@@ -1,9 +1,30 @@
 ## Confirm Cecho is enabled. ##
 # TODO: Can we change the Error and exit lines to call the EnableCecho function instead? 
+#		We need to source Cecho when IsCechoEnabled returns as Not Installed.
+
+########################################
+## Setup Variables ##				  ##
+########################################
+
+CechoDirectory="/etc/BLING"
+CechoFileName="Cecho.bfunc" # Needs updating when AdvCecho is implemented - use CechoDirectory.
+
+
+
+function IsCechoInstalled() {
+	if [ -f $CechoDirectory/$CechoFileName ]; then
+		IsCechoEnabled # Check if Cecho is sourced and executable.
+	else	
+		echo "ERROR: Cecho is NOT installed."
+		exit 1 # Will this accidentally exit BASH or tmux shell ?
+}
+
 function IsCechoEnabled() {
-	if ! [ -x "$(command -v cecho)" ]; then
-	  echo 'Error: cecho is not installed.' >&2
-  	exit 1 # Will this accidentally exit BASH or tmux shell ? 
+	if [ -x "$(command -v cecho)" ]; then 	# Runs is Cecho command does NOT exist or is not executable.
+		echo "Cecho is Enabled."
+	else
+		echo 'Error: Cecho is not installed.' >&2
+  		exit 1 # Will this accidentally exit BASH or tmux shell ? 
 	fi
 }
 
@@ -12,11 +33,29 @@ function EnableCecho() {
 	if [ -x "$(command -v cecho)" ]; then
 		echo "Cecho Enabled."
 		echo " "
+	else
+		source $CechoDirectory/$CechoFileName
 	fi
 }
 
+###########################################################################################################
+### Cecho Alias Swap Functions ###																		###
+###########################################################################################################
+
+## TODO: Can we make CechoAlias a function with argumants for On and Off ?
+## 				e.g. Cecho_Alias on and Cecho_Alias off
+
+
 ### Swap echo with cecho if enabled. ###
-## TODO: Needs Testing.  
-function SwapEchoWithCecho() {
+function Cecho_AliasOn() {
 	echo="cecho"
+	echo "Cecho as replacement for echo is ENABLED."
+	echo "To disable, run 'Cecho_AliasOff'
+}
+
+### Revert back to normal echo operation without Cecho. ###
+function CechoAliasOff() {
+	echo="echo"
+	echo "Cecho as replacement for echo is DISABLED."
+	echo "To disable, run 'Cecho_AliasOn'
 }
