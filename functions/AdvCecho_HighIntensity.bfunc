@@ -27,16 +27,16 @@ advcecho_HighIntensity() {
 
 ### Test Display - WORKS!! ###
 function DisplayTest() {
-advcecho_HighIntensity b "This is blue"
-advcecho_HighIntensity r "This is red"
-advcecho_HighIntensity yellow "This is yellow"
-advcecho_HighIntensity white "This is white"
-advcecho_HighIntensity gray "This is gray"
+	advcecho_HighIntensity b "This is blue"
+	advcecho_HighIntensity r "This is red"
+	advcecho_HighIntensity yellow "This is yellow"
+	advcecho_HighIntensity white "This is white"
+	advcecho_HighIntensity gray "This is gray"
 }
 
 ### Usage ###
 function Usage() {
-echo "advcecho_HighIntensity <color> <text>"
-echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/gray"
-echo "and <text> is what you want to be echoed."
+	echo "advcecho_HighIntensity <color> <text>"
+	echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/gray"
+	echo "and <text> is what you want to be echoed."
 }
