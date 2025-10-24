@@ -27,16 +27,16 @@ advcecho_Underline() {
 
 ### Test Display - WORKS!! ###
 function DisplayTest() {
-advcecho_Background b "This is blue"
-advcecho_Background r "This is red"
-advcecho_Background yellow "This is yellow"
-advcecho_Background white "This is white"
-advcecho_Background gray "This is gray"
+	advcecho_Background b "This is blue"
+	advcecho_Background r "This is red"
+	advcecho_Background yellow "This is yellow"
+	advcecho_Background white "This is white"
+	advcecho_Background gray "This is gray"
 }
 
 ### Usage ###
 function Usage() {
-echo "advcecho_Background <color> <text>"
-echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/gray"
-echo "and <text> is what you want to be echoed."
+	echo "advcecho_Background <color> <text>"
+	echo "Where <color> is one of black/red/green/yellow/blue/purple/cyan/gray"
+	echo "	and <text> is what you want to be echoed."
 }
