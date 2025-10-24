@@ -16,7 +16,7 @@
 <ul>
 
 <li> Rename NewCecho as Cecho. </li>
-<li> Rename AdvCecho_ Functions as Cecho_ Functions. </li>
+<li> Rename AdvCecho_ Functions as Cecho_Functions. </li>
 <li> [READY TO TEST] Create an easy way to source via functions.list. </li>
 <li> Convert each item to a passable cmdline parameter.
 
