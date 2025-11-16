@@ -22,7 +22,7 @@
 <li> Rename NewCecho as Cecho. </li>
 <li> Rename AdvCecho_Functions as Cecho_Functions. </li>
 <li> [READY TO TEST] Create an easy way to source via functions.list. </li>
-<li> [PRIORITY] Test SanityChecker_Cecho.bfunc </li>
+<li> [READY TO TEST] Test SanityChecker_Cecho.bfunc </li>
 <li> Convert each item to a passable cmdline parameter. </li>
 
 &emsp; Example: &nbsp; Instead of using:
