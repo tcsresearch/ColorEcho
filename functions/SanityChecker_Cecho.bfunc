@@ -67,7 +67,7 @@ function CechoAliasOff() {
 function Cecho_Alias() {
   local on=""
   local off=""
-s() {
+s() 
 
 # Parse named arguments
   while [[ "$#" -gt 0 ]]; do
