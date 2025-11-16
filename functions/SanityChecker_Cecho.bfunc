@@ -6,7 +6,7 @@
 ## Setup Variables ##				  ##
 ########################################
 
-CechoDirectory="/etc/BLING"	 # Confirm proper directory.
+CechoDirectory="/etc/BLING/functions"	 # Confirm proper directory.
 CechoFileName="Cecho.bfunc"  # Needs updating when AdvCecho is implemented - use CechoDirectory.
 Cecho_Alias_Status="Unknown" # Needs implementation.
 
