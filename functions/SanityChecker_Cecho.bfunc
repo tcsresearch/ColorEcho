@@ -17,6 +17,7 @@ function IsCechoInstalled() {
 	else	
 		echo "ERROR: Cecho is NOT installed."
 		exit 1 # Will this accidentally exit BASH or tmux shell ?
+fi
 }
 
 function IsCechoEnabled() {
