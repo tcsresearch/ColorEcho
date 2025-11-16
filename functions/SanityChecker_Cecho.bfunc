@@ -55,7 +55,7 @@ function Cecho_AliasOn() {
 }
 
 ### Revert back to normal echo operation without Cecho. ###
-function CechoAliasOff() {
+function Cecho_AliasOff() {
 	alias echo="echo"
 	echo "Cecho as replacement for echo is DISABLED."
 	echo "To disable, run 'Cecho_AliasOn'
