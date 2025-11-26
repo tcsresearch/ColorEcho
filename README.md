@@ -1,3 +1,5 @@
+<img src="https://github.com/tcsresearch/ColorEcho/blob/main/ColorEcho-Logo.png">
+
 # ColorEcho
 <ul>
  Library and Tools For Colorized BASH Output
