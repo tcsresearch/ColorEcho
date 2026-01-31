@@ -2,7 +2,7 @@
 <hr>
 <ul>
     --- Implementations ---
-    <li> NewCecho - Current Cecho Implementation. </li>
+    <li> Cecho - Current Cecho implementation with additional colors and aliases added. </li>
     <li> AdvCecho - NewCecho with white color added and grey as an alias of gray. </li>
     <li> AdvCecho_Bold - AdvCecho Bold. </li>
     <li> AdvCecho_Underline - AdvCecho Underline. </li>
@@ -11,7 +11,7 @@
     <li> AdvCecho_HighIntensityBackground - High Intensity Background AdvCecho. </li>
     <br>
     --- Tools ---
-    <li> SanityChecker_Cecho.bfunc - Functions to enable/disable Cecho.</li>
+    <li> [NEEDS TESTING] SanityChecker_Cecho.bfunc - Functions to enable/disable Cecho.</li>
 </ul>
 
 ### TODO
