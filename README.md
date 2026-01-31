@@ -19,6 +19,11 @@
 <hr>
 
 <p>
+Update 01/30/2026: Minor improvements to Cecho.bfunc, incl. new colors. [WORKING]. <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Retired NewCecho; Renamed AdvCecho as Cecho. <br>
+</p>
+
+<p>
 Update 10/23/2025: Major improvements to SanityChecker_Cecho.bfunc [UNTESTED]. <br>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Formatting and typo fixes for files in the 'functions' folder. <br>
 </p>
