@@ -3,20 +3,20 @@
 #		We need to source Cecho when IsCechoEnabled returns as Not Installed.
 
 ########################################
-## Setup Variables ##				  ##
+## Setup Variables ##	              ##
 ########################################
 
-CechoDirectory="/etc/BLING/functions"	 # Confirm proper directory.
-CechoFileName="Cecho.bfunc"  # Needs updating when AdvCecho is implemented - use CechoDirectory.
-Cecho_Alias_Status="Unknown" # Needs implementation.
+CechoDirectory="/etc/BLING/functions"	# Confirm proper directory.
+CechoFileName="Cecho.bfunc"  		# Needs updating when AdvCecho is implemented - use CechoDirectory.
+Cecho_Alias_Status="Unknown" 		# Needs implementation.
 
 
 function IsCechoInstalled() {
 	if [ -f $CechoDirectory/$CechoFileName ]; then
-		IsCechoEnabled # Check if Cecho is sourced and executable.
+		IsCechoEnabled 		# Check if Cecho is sourced and executable.
 	else	
 		echo "ERROR: Cecho is NOT installed."
-		# exit 1 #  this will exit BASH or tmux shell - Confirmed.
+		# exit 1 		#  this will exit BASH or tmux shell - Confirmed.
 fi
 }
 
@@ -25,7 +25,7 @@ function IsCechoEnabled() {
 		echo "Cecho is Enabled."
 	else
 		echo 'Error: Cecho is not installed.' >&2
-  		# exit 1 #  this will exit BASH or tmux shell - Confirmed.
+  		# exit 1 		#  this will exit BASH or tmux shell - Confirmed.
 	fi
 }
 
@@ -40,11 +40,8 @@ function EnableCecho() {
 }
 
 ###########################################################################################################
-### Cecho Alias Swap Functions ###																		###
+### Cecho Alias Swap Functions - To Be Superceded By Master Function Cecho_Alias ###			###
 ###########################################################################################################
-
-## TODO: Can we make CechoAlias a function with argumants for On and Off ?
-## 				e.g. Cecho_Alias on and Cecho_Alias off
 
 
 ### Swap echo with cecho if enabled. ###
@@ -64,8 +61,13 @@ function Cecho_AliasOff() {
 }
 
 
+###########################################################################################################
+### Cecho Alias Swap Functions - Master Function ###                                                    ###
+###########################################################################################################
+
 
 ########## Cecho Alias Master Function - WIP !!! ##########
+
 function Cecho_Alias() {
   local on=""
   local off=""
