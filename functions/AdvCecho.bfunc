@@ -7,7 +7,7 @@
 # 	Portions Taken From: https://gkarthiks.github.io/quick-commands-cheat-sheet/bash_command.html
 #	Additional Portions Added From: https://github.com/gkarthiks/quick-commands-cheat-sheet/blob/main/bash_command.md
 
-advcecho() {
+cecho() {
         local code="\033["
         case "$1" in
                 black  		| bk) color="${code}0;30m";;
