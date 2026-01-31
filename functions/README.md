@@ -21,15 +21,4 @@
 
 <li> [READY TO TEST] Create an easy way to source via functions.list. </li>
 <li> [READY TO TEST] Test SanityChecker_Cecho.bfunc </li>
-<li> Convert each item to a passable cmdline parameter. </li>
 
-&emsp; Example: &nbsp; Instead of using:
-<br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; ``` cecho ${Red} This text is Red. ${Color_Off} ``` ,
-<br> &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp; we should be able to use:
-<br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; ``` cecho --red "This Text is Red." ```
-<br>
-<br>
-    &emsp; Currenty we can use NewCecho and AdvCecho to do this.
-</li>
