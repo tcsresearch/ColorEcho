@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # This file is meant to allow easy research into future improvements to ColorEcho.
 # Taken From: https://github.com/aj-seven/Android-Sysinfo/blob/master/sysinfo
 
