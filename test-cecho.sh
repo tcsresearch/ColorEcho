@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2034  # Unused variables left for readability
 
 cecho(){
     RED="\033[0;31m"
