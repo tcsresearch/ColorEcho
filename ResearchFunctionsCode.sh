@@ -233,28 +233,28 @@ $YELLOW$BOLD INFO:$RESET Press 'Enter' or any key to Quit."
 cpu() {
     clear
 cpu_info() {
-    data=$(lscpu)
-    name=$(echo "$data" | grep "Vendor ID" | awk '{print $3}')
-    model=$(getprop ro.soc.model)
-    arch=$(echo "$data" | grep "Architecture" | awk '{print $2}')
-    cores=$(grep -c "^processor" /proc/cpuinfo)
-    governor=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
-    order=$(echo "$data" | awk '/Byte Order/ {for (i=3; i<=NF; i++) printf "%s ", $i}')
-    op_modes=$(echo "$data" | awk '/CPU op-mode\(s\)/ {print $(NF-1), $NF}')
-    features=$(awk '/Features/ && !flag {sub(/^[[:space:]]*Features[[:space:]]*:[[:space:]]*/, ""); print; flag=1}' /proc/cpuinfo)
+    data="$(lscpu)"
+    name="$(echo "$data" | grep "Vendor ID" | awk '{print $3}')"
+    model="$(getprop ro.soc.model)"
+    arch="$(echo "$data" | grep "Architecture" | awk '{print $2}')"
+    cores="$(grep -c "^processor" /proc/cpuinfo)"
+    governor="$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)"
+    order="$(echo "$data" | awk '/Byte Order/ {for (i=3; i<=NF; i++) printf "%s ", $i}')"
+    op_modes="$(echo "$data" | awk '/CPU op-mode\(s\)/ {print $(NF-1), $NF}')"
+    features="$(awk '/Features/ && !flag {sub(/^[[:space:]]*Features[[:space:]]*:[[:space:]]*/, ""); print; flag=1}' /proc/cpuinfo)"
 
-    model_names=$(echo "$data" | awk '/Model name/ {for (i=3; i<=NF; i++) printf "%s ", $i}')
+    model_names="$(echo "$data" | awk '/Model name/ {for (i=3; i<=NF; i++) printf "%s ", $i}')"
 
-    min_max_values=$(echo "$data" | awk '/CPU (min|max) MHz:/ {print $NF}')
+    min_max_values="$(echo "$data" | awk '/CPU (min|max) MHz:/ {print $NF}')"
 
-    scaling_percentages=$(echo "$data" | grep -oP 'CPU\(s\) scaling MHz:\s+\K\d+%')
+    scaling_percentages="$(echo "$data" | grep -oP 'CPU\(s\) scaling MHz:\s+\K\d+%')"
 
-    vulnerabilities=$(echo "$data" | grep -E "Vulnerability|bugs" | awk '/Vulnerability/ {gsub("Vulnerability ", ""); print $0}')
+    vulnerabilities="$(echo "$data" | grep -E "Vulnerability|bugs" | awk '/Vulnerability/ {gsub("Vulnerability ", ""); print $0}')"
 
-    abi=$(getprop ro.product.cpu.abi)
-    s_abi=$(getprop ro.product.cpu.abilist)
+    abi="$(getprop ro.product.cpu.abi)"
+    s_abi="$(getprop ro.product.cpu.abilist)"
     # Number of CPUs
-    num_cpus=$(echo "$model_names" | wc -l)
+    num_cpus="$(echo "$model_names" | wc -l)"
 
     PRINT "$BOLD
      $CYAN Name:           $WHITE $name
@@ -278,7 +278,7 @@ $WHITE$vulnerabilities"
 
 #default state of getting cpu load
     cpu_load_without_adb() {
-        local cpu_usage=$(ps aux | awk 'BEGIN {sum=0} {sum+=$3}; END {printf "%.2f%%\n",sum}')
+        local cpu_usage="$(ps aux | awk 'BEGIN {sum=0} {sum+=$3}; END {printf "%.2f%%\n",sum}')"
     PRINT $BOLD"
      $CYAN CPU Load(within Termux): $WHITE $cpu_usage"
 }
@@ -304,10 +304,10 @@ read_cpu_mhz() {
         cores+=("$core_number")
 
         #extract frequency values in KHz.
-        freq_khz=$(cat "$file")
+        freq_khz="$(cat "$file")"
 
         # Convert kHz to MHz
-        freq_mhz=$(echo "scale=2; $freq_khz / 1000" | bc)
+        freq_mhz="$(echo "scale=2; $freq_khz / 1000" | bc)"
         freqs+=("$freq_mhz")
     done
 
@@ -324,31 +324,31 @@ read_cpu_mhz() {
         local idle=$3
         local total=$4
 
-        local idle_delta=$((idle - prev_idle))
-        local total_delta=$((total - prev_total))
+        local idle_delta="$((idle - prev_idle))"
+        local total_delta="$((total - prev_total))"
 
         # Avoid division by zero
-        if [[ $total_delta -eq 0 ]]; then
+        if [[ "$total_delta" -eq 0 ]]; then
             echo "0.00"
             return
         fi
 
-        local cpu_usage=$(bc -l <<< "scale=2; (1 - ($idle_delta /$total_delta)) * 100")
-        echo $cpu_usage
+        local cpu_usage="$(bc -l <<< "scale=2; (1 - ($idle_delta /$total_delta)) * 100")"
+        echo "$cpu_usage"
 }
 
 # Initial readings
 read_cpu_stats
-prev_idle=$idle
-prev_total=$((user + nice + system + idle + iowait + irq + softirq + steal))
+prev_idle="$idle"
+prev_total="$((user + nice + system + idle + iowait + irq + softirq + steal))"
 
 #fetch cpu load by adb
     cpu_load_with_adb() {
         read_cpu_stats
-        local cpu_usage=$(calculate_cpu_usage $prev_idle $prev_total $idle $((user + nice + system + idle + iowait + irq + softirq + steal)))
+        local cpu_usage="$(calculate_cpu_usage $prev_idle $prev_total $idle $((user + nice + system + idle + iowait + irq + softirq + steal)))"
         # Update previous values
-        prev_idle=$idle
-        prev_total=$((user + nice + system + idle + iowait + irq + softirq + steal))
+        prev_idle="$idle"
+        prev_total="$((user + nice + system + idle + iowait + irq + softirq + steal))"
     PRINT $BOLD"
      $CYAN Overall System Load:$WHITE $cpu_usage%"
 }
@@ -375,7 +375,7 @@ $UNDERLINE$MAGENTA CPU Load:$RESET"
 $YELLOW$BOLD INFO:$RESET Press 'l' for Live Monitoring...
 $YELLOW$BOLD INFO:$RESET Press 'Enter' or any key to Quit."
         read -n 1 key
-        if [[ $key = "l" ]]; then
+        if [[ "$key" = "l" ]]; then
             clear
             while true; do
                 tput cup 0
@@ -447,20 +447,20 @@ $YELLOW INFO:$RESET Press 'Enter' or any key to Quit..."
 #wifi info
 wifi_info() {
     termux_api_with_prompt_setup
-    local data=$(termux-wifi-connectioninfo)
-    local status=$(jq -r '.supplicant_state' <<< "$data")
-    local name=$(jq -r '.ssid' <<< "$data")
-    local hidden_state=$(jq -r '.ssid_hidden' <<< "$data")
-    local freq=$(jq -r '.frequency_mhz' <<< "$data")
-    local ip=$(jq -r '.ip' <<< "$data")
-    local mac_address=$(jq -r '.mac_address' <<< "$data")
-    local max_speed=$(jq -r '.link_speed_mbps' <<< "$data")
+    local data="$(termux-wifi-connectioninfo)"
+    local status="$(jq -r '.supplicant_state' <<< "$data")"
+    local name="$(jq -r '.ssid' <<< "$data")"
+    local hidden_state="$(jq -r '.ssid_hidden' <<< "$data")"
+    local freq="$(jq -r '.frequency_mhz' <<< "$data")"
+    local ip="$(jq -r '.ip' <<< "$data")"
+    local mac_address="$(jq -r '.mac_address' <<< "$data")"
+    local max_speed="$(jq -r '.link_speed_mbps' <<< "$data")"
 
-    if [[ $status != "COMPLETED" ]]; then
+    if [[ "$status" != "COMPLETED" ]]; then
     PRINT $YELLOW "WiFi information not available."
         return 1
     fi
-    hidden_state=$( [[ "$hidden_state" == "true" ]] && echo "Yes" || echo "No" )
+    hidden_state="$( [[ "$hidden_state" == "true" ]] && echo "Yes" || echo "No" )"
 
     PRINT $BOLD"
 $UNDERLINE $MAGENTA WiFi Info:$RESET$BOLD
@@ -475,27 +475,27 @@ $UNDERLINE $MAGENTA WiFi Info:$RESET$BOLD
 #cellular info
 cellular_info() {
     termux_api_with_prompt_setup
-    local data=$(termux-telephony-deviceinfo)
-    local network=$(jq -r '.network_operator_name' <<< "$data")
-    local type=$(jq -r '.network_type' <<< "$data")
-    local roaming=$(jq -r '.network_roaming' <<< "$data")
-    local data_enabled=$(jq -r '.data_enabled' <<< "$data")
-    local connection=$(jq -r '.data_state' <<< "$data")
-    local signal=$(jq -r '.signal_strength' <<< "$data")
-    local sim=$(jq -r '.sim_operator_name' <<< "$data")
-    local country=$(jq -r '.sim_country_iso' <<< "$data")
-    local state=$(jq -r '.sim_state' <<< "$data")
-    local dualsim=$(jq -r '.phone_count' <<< "$data")
-    local phone=$(jq -r '.phone_type' <<< "$data")
+    local data="$(termux-telephony-deviceinfo)"
+    local network="$(jq -r '.network_operator_name' <<< "$data")"
+    local type="$(jq -r '.network_type' <<< "$data")"
+    local roaming="$(jq -r '.network_roaming' <<< "$data")"
+    local data_enabled="$(jq -r '.data_enabled' <<< "$data")"
+    local connection="$(jq -r '.data_state' <<< "$data")"
+    local signal="$(jq -r '.signal_strength' <<< "$data")"
+    local sim="$(jq -r '.sim_operator_name' <<< "$data")"
+    local country="$(jq -r '.sim_country_iso' <<< "$data")"
+    local state="$(jq -r '.sim_state' <<< "$data")"
+    local dualsim="$(jq -r '.phone_count' <<< "$data")"
+    local phone="$(jq -r '.phone_type' <<< "$data")""
 
     if [[ $state == "absent" ]]; then
         echo "Cellular Network Info Not Available.."
         return 1
     fi
 
-    dualsim=$( [[ $dualsim -eq 2 ]] && echo "Yes" || echo "No" )
-    roaming=$( [[ $roaming == "true" ]] && echo "Enabled" || echo "Disabled" )
-    data_enabled=$( [[ $data_enabled == "true" ]] && echo "Enabled" || echo "Disabled" )
+    dualsim="$( [[ $dualsim -eq 2 ]] && echo "Yes" || echo "No" )"
+    roaming="$( [[ $roaming == "true" ]] && echo "Enabled" || echo "Disabled" )"
+    data_enabled="$( [[ $data_enabled == "true" ]] && echo "Enabled" || echo "Disabled" )"
 
     PRINT $BOLD"
 $UNDERLINE$MAGENTA Cellular Info:$RESET$BOLD
@@ -515,9 +515,9 @@ $UNDERLINE$MAGENTA Cellular Info:$RESET$BOLD
 #Network Information
 netstats () {
     clear
-    HOST_NAME=$(hostname)
-    EXTERNALIP=$(curl -4 ifconfig.me 2>/dev/null)
-    INTERNALIP=$(hostname -i)
+    HOST_NAME="$(hostname)"
+    EXTERNALIP="$(curl -4 ifconfig.me 2>/dev/null)"
+    INTERNALIP="$(hostname -i)"
     local STATUS=$(
     if ping -q -c2 google.com &>/dev/null; then
         PRINT $BOLD $GREEN "You are Up :)"
@@ -603,13 +603,13 @@ battery() {
     termux_api_with_prompt_setup
     
     get_batt_info() {
-        local data=$(termux-battery-status)
-        health=$(jq -r '.health' <<< "$data")
-        percentage=$(jq -r '.percentage' <<< "$data")
-        plugged=$(jq -r '.plugged' <<< "$data")
-        charging=$(jq -r '.status' <<< "$data")
-        temp=$(jq -r '.temperature' <<< "$data")
-        current=$(jq -r '.current' <<< "$data")
+        local data="$(termux-battery-status)"
+        health="$(jq -r '.health' <<< "$data")"
+        percentage="$(jq -r '.percentage' <<< "$data")"
+        plugged="$(jq -r '.plugged' <<< "$data")"
+        charging="$(jq -r '.status' <<< "$data")"
+        temp="$(jq -r '.temperature' <<< "$data")"
+        current="$(jq -r '.current' <<< "$data")"
     }
     
     print_batt_details() {
@@ -736,11 +736,11 @@ fi)
 # Display menu function
 display_menu() {
     PRINT "
-$BOLD$BLUE $(figlet -c -t -f term "SYSTEM INFORMATION v2.0")
+$BOLD$BLUE "$(figlet -c -t -f term "SYSTEM INFORMATION v2.0")"
 
-$BOLD$YELLOW $(figlet -c -t -f term "Github: https://github.com/Aj-Seven/Android-Sysinfo")
+$BOLD$YELLOW "$(figlet -c -t -f term "Github: https://github.com/Aj-Seven/Android-Sysinfo")"
 
-$BOLD$CYAN $(figlet -c -t -f digital "Author: @Aj-Seven")
+$BOLD$CYAN "$(figlet -c -t -f digital "Author: @Aj-Seven")"
   
         $BOLD$MAGENTA UPDATES:$RESET$UPDATE_STATUS | $BOLD$MAGENTA ADB:$RESET$ADB_STATUS
 
