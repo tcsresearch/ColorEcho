@@ -5,19 +5,19 @@
 
 
 #color codes
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-YELLOW=$(tput setaf 3)
-BLUE=$(tput setaf 4)
-MAGENTA=$(tput setaf 5)
-CYAN=$(tput setaf 6)
-WHITE=$(tput setaf 7)
-RESET=$(tput sgr0)
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 4)"
+MAGENTA="$(tput setaf 5)"
+CYAN="$(tput setaf 6)"
+WHITE="$(tput setaf 7)"
+RESET="$(tput sgr0)"
 
 #text formatting
-BOLD=$(tput bold)
-UNDERLINE=$(tput smul)
-NO_UNDERLINE=$(tput rmul)
+BOLD="$(tput bold)"
+UNDERLINE="$(tput smul)"
+NO_UNDERLINE="$(tput rmul)"
 
 #store repo info
 REPO_DIR="$PREFIX/share/Android-Sysinfo"
@@ -64,10 +64,10 @@ monitor_update() {
     git fetch --force origin > /dev/null 2>&1
 
     # Get the current branch
-    current_branch=$(git rev-parse --abbrev-ref HEAD)
+    current_branch="$(git rev-parse --abbrev-ref HEAD)"
 
     # Check if the local branch is behind the remote branch
-    if [ $(git rev-list HEAD...origin/$current_branch --count) -gt 0 ]; then
+    if [ $(git rev-list HEAD...origin/"$current_branch" --count) -gt 0 ]; then
         return 0
     else
         return 1
@@ -77,7 +77,7 @@ monitor_update() {
 # Function to check the termux api android pkg availabity
 check_termux_api() {
     # Capture the output and check if the string "Error: Not found" exists
-    local status=$(termux-api-start 2>&1 | grep -o "Error: Not found")
+    local status="$(termux-api-start 2>&1 | grep -o "Error: Not found")"
     
     # Compare the status with the string "Error: Not found"
     if [ "$status" == "Error: Not found" ]; then
@@ -114,9 +114,9 @@ check_update() {
     cd "$REPO_DIR" || { UPDATE_STATUS="failed"; return; }
     git fetch --force origin > /dev/null 2>&1
 
-    current_branch=$(git rev-parse --abbrev-ref HEAD)
+    current_branch="$(git rev-parse --abbrev-ref HEAD)"
 
-    if [ $(git rev-list HEAD...origin/$current_branch --count) -gt 0 ]; then
+    if [ $(git rev-list HEAD...origin/"$current_branch" --count) -gt 0 ]; then
         clear
     PRINT "
 $BOLD$GREEN Updates Available :)\n"
@@ -127,7 +127,7 @@ $BOLD$GREEN Updates Available :)\n"
             N|n)
     PRINT "
 $BOLD$YELLOW Returning to main Menu"
-                    UPDATE_STATUS=$(monitor_update)
+                    UPDATE_STATUS="$(monitor_update)"
                     main
             ;;
             *)
@@ -146,7 +146,7 @@ $BOLD$YELLOW INFO:$RESET Press 'Enter' or any key to return main menu..."
 
 #Function to check whether ADB remote tcp is open or not.
 check_adb_port() {
-    local state=$(nmap -p 5555 127.0.0.1)
+    local state="$(nmap -p 5555 127.0.0.1)"
     if echo "$state" | grep -q "open"; then
         return 0
     else
@@ -174,7 +174,7 @@ spinner() {
     local i=0
     tput civis
     while ps -p $pid > /dev/null; do
-        local color=${colors[i++ % ${#colors[@]}]}
+        local color="${colors[i++ % ${#colors[@]}]}"
         printf "\e[${color}m%s\e[0m" "${spinstr:i++%${#spinstr}:1}"
         sleep $delay
         printf "\b"
@@ -186,13 +186,13 @@ spinner() {
 memusage() {
     clear
     get_memory_info() {
-        local mem_info=$(free -m | awk '/Mem/ {print}')
-        TOTAL_MEM=$(awk '{print $2}' <<< "$mem_info")
-        AVAILABLE_MEM=$(awk '{print $7}' <<< "$mem_info")
-        TOTAL_USED_MEM=$(( TOTAL_MEM - AVAILABLE_MEM ))
-        BUFFCACHE_MEM=$(awk '{print $6}' <<< "$mem_info")
-        FREE_BUFF_MEM=$(awk '{print $4}' <<< "$mem_info")
-        PERCENT_USED_MEM=$(awk 'NR==2{printf "%.2f%%", $3*100/$2 }' <<< "$(free -m)")
+        local mem_info="$(free -m | awk '/Mem/ {print}')"
+        TOTAL_MEM="$(awk '{print $2}' <<< "$mem_info")"
+        AVAILABLE_MEM="$(awk '{print $7}' <<< "$mem_info")"
+        TOTAL_USED_MEM="$(( $TOTAL_MEM - $AVAILABLE_MEM ))"
+        BUFFCACHE_MEM="$(awk '{print $6}' <<< "$mem_info")"
+        FREE_BUFF_MEM="$(awk '{print $4}' <<< "$mem_info")"
+        PERCENT_USED_MEM="$(awk 'NR==2{printf "%.2f%%", $3*100/$2 }' <<< "$(free -m)")"
     }
 
     print_memory_details() {
