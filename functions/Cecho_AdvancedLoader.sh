@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck source=/dev/null
 
 function AdvancedLoader() {
   # Assuming 'files.list' contains a list of filenames, one per line
