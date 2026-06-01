@@ -61,6 +61,8 @@ print_memory_details() {
 #CPU Information
 cpu() {
     clear
+    }
+    
 cpu_info() {
     data=$(lscpu)
     name=$(echo "$data" | grep "Vendor ID" | awk '{print $3}')
