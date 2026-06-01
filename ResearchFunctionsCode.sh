@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034  # Unused variables left for readability
 
 # This file is meant to allow easy research into future improvements to ColorEcho.
 # Taken From: https://github.com/aj-seven/Android-Sysinfo/blob/master/sysinfo
