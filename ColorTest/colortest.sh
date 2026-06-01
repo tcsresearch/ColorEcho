@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/env bash
+# shellcheck disable=SC2034  # Unused variables left for readability
+
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 WHITE='\033[0;37m'
