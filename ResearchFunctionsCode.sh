@@ -19,6 +19,11 @@ BOLD=$(tput bold)
 UNDERLINE=$(tput smul)
 NO_UNDERLINE=$(tput rmul)
 
+#store repo info
+REPO_DIR="$PREFIX/share/Android-Sysinfo"
+SCRIPT_NAME="sysinfo"
+REPO_URL="https://github.com/Aj-Seven/Android-Sysinfo"
+BIN_DIR="$PREFIX/bin"
 
 # Function to print texts
 PRINT() {
@@ -26,6 +31,137 @@ PRINT() {
     local color=$2
     local message=$3
     echo -e "${style}${color}${message}${RESET}"
+}
+
+# Function to update the repository
+update_repo() {
+    cd "$REPO_DIR" || exit 1
+
+    # Run git pull origin and parse the output to show only relevant lines
+   if output=$(git pull origin $(git rev-parse --abbrev-ref HEAD) 2>&1); then
+        if echo "$output" | grep -q 'Already up to date'; then
+            echo "up-to-date"
+        elif echo "$output" | grep -q 'Updating'; then
+            echo "updated"
+    PRINT "
+$BOLD$YELLOW Updated the script, start it again to apply changes..."
+            exit 0
+        else
+            echo "Failed"
+        fi
+    fi
+}
+
+# Function to check for updates in the repository
+monitor_update() {
+    # Check if the repository folder exists
+    if [ ! -d "$REPO_DIR" ]; then
+        git clone "$REPO_URL" "$REPO_DIR" > /dev/null 2>&1 || { UPDATE_STATUS="failed"; return; }
+    fi
+
+    # Fetch updates forcefully
+    cd "$REPO_DIR" || { UPDATE_STATUS="failed"; return; }
+    git fetch --force origin > /dev/null 2>&1
+
+    # Get the current branch
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+    # Check if the local branch is behind the remote branch
+    if [ $(git rev-list HEAD...origin/$current_branch --count) -gt 0 ]; then
+        return 0
+    else
+        return 1
+    fi 
+}
+
+# Function to check the termux api android pkg availabity
+check_termux_api() {
+    # Capture the output and check if the string "Error: Not found" exists
+    local status=$(termux-api-start 2>&1 | grep -o "Error: Not found")
+    
+    # Compare the status with the string "Error: Not found"
+    if [ "$status" == "Error: Not found" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Function to check from termux_api and prompt request for installation
+termux_api_with_prompt_setup() {
+    if check_termux_api; then
+        clear
+        PRINT $BOLD"$RED Please Install termux-api in your device, to run this option$RESET
+
+$BLUE Visit here: $GREEN https://f-droid.org/en/packages/com.termux.api/$RESET
+
+$BOLD$WHITE Do you want to visit the site?? Enter Y"
+
+        read visit
+
+        if [[ $visit == "Y" ]] || [[ $visit == "y" ]]; then
+            xdg-open https://f-droid.org/en/packages/com.termux.api/
+        else
+            main 
+        fi
+    fi
+}
+
+
+#check update function for menu selection
+check_update() {
+    clear
+    cd "$REPO_DIR" || { UPDATE_STATUS="failed"; return; }
+    git fetch --force origin > /dev/null 2>&1
+
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+    if [ $(git rev-list HEAD...origin/$current_branch --count) -gt 0 ]; then
+        clear
+    PRINT "
+$BOLD$GREEN Updates Available :)\n"
+        read -p "Do you want to update it?(Y/N) " select
+        case $select in
+            Y|y) update_repo
+            ;;
+            N|n)
+    PRINT "
+$BOLD$YELLOW Returning to main Menu"
+                    UPDATE_STATUS=$(monitor_update)
+                    main
+            ;;
+            *)
+    PRINT "
+$BOLD$YELLOW INFO:$RESET Invalid Selection, Select options in Between Y/N..."
+            ;;
+        esac
+    else
+    PRINT "
+$BOLD$CYAN Already Up-to-date."
+    PRINT "
+$BOLD$YELLOW INFO:$RESET Press 'Enter' or any key to return main menu..."
+        read -r
+    fi
+}
+
+#Function to check whether ADB remote tcp is open or not.
+check_adb_port() {
+    local state=$(nmap -p 5555 127.0.0.1)
+    if echo "$state" | grep -q "open"; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#Function to connect ADB to the device
+connect_adb() {
+    adb connect 127.0.0.1:5555 >/dev/null 2>&1
+}
+
+#Function to run adb shell command within localhost port to avoid conflicts
+run-shell() {
+    adb -s 127.0.0.1:5555 shell "$@"
 }
 
 #spinner function
@@ -45,9 +181,21 @@ spinner() {
     done
     tput cnorm
     printf "   \b\b\b"
-} 
+}
 
-print_memory_details() {
+memusage() {
+    clear
+    get_memory_info() {
+        local mem_info=$(free -m | awk '/Mem/ {print}')
+        TOTAL_MEM=$(awk '{print $2}' <<< "$mem_info")
+        AVAILABLE_MEM=$(awk '{print $7}' <<< "$mem_info")
+        TOTAL_USED_MEM=$(( TOTAL_MEM - AVAILABLE_MEM ))
+        BUFFCACHE_MEM=$(awk '{print $6}' <<< "$mem_info")
+        FREE_BUFF_MEM=$(awk '{print $4}' <<< "$mem_info")
+        PERCENT_USED_MEM=$(awk 'NR==2{printf "%.2f%%", $3*100/$2 }' <<< "$(free -m)")
+    }
+
+    print_memory_details() {
     PRINT $BOLD"
      $CYAN Total Memory:           $WHITE $TOTAL_MEM MB
      $CYAN Used Memory:            $WHITE $TOTAL_USED_MEM MB
@@ -55,6 +203,30 @@ print_memory_details() {
      $CYAN Buffer+Cache Memory:    $WHITE $BUFFCACHE_MEM MB
      $CYAN Free Buff+Cache Memory: $WHITE $FREE_BUFF_MEM MB
      $CYAN Percentage Usage:       $WHITE $PERCENT_USED_MEM"
+}
+    get_memory_info
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA Memory Details:$RESET"
+        print_memory_details
+    PRINT "
+$YELLOW$BOLD INFO:$RESET Press 'l' for Live Monitoring...
+$YELLOW$BOLD INFO:$RESET Press 'Enter' or any key to Quit."
+        read -n 1 key
+        if [[ $key = "l" ]]; then
+                clear
+                while true; do
+                    tput cup 0
+                    tput el
+                    get_memory_info
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA Memory Live Monitoring:$RESET"
+                    print_memory_details
+    PRINT "
+$YELLOW$BOLD INFO:$RESET Press 'Enter' or any key to Quit."
+                    sleep 1
+                    read -n 1 -s -t 1 && break
+                done
+        fi
 }
 
 #CPU Information
@@ -104,6 +276,150 @@ $WHITE$vulnerabilities"
 
 }
 
+#default state of getting cpu load
+    cpu_load_without_adb() {
+        local cpu_usage=$(ps aux | awk 'BEGIN {sum=0} {sum+=$3}; END {printf "%.2f%%\n",sum}')
+    PRINT $BOLD"
+     $CYAN CPU Load(within Termux): $WHITE $cpu_usage"
+}
+
+#Function to read CPU stats from /proc/stat
+    read_cpu_stats() {
+        read cpu user nice system idle iowait irq softirq steal guest guest_nice <<< $(run-shell grep '^cpu ' /proc/stat)
+}
+
+#get CPU frequency
+read_cpu_mhz() {
+    local core_number=-1
+    local cores=()
+    local freqs=()
+
+    #loop through each CPU core.
+    for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq; do
+
+        #get CPU core number.
+        ((core_number++))
+
+        #store it in array.
+        cores+=("$core_number")
+
+        #extract frequency values in KHz.
+        freq_khz=$(cat "$file")
+
+        # Convert kHz to MHz
+        freq_mhz=$(echo "scale=2; $freq_khz / 1000" | bc)
+        freqs+=("$freq_mhz")
+    done
+
+    for ((i=0; i<${#cores[@]}; i++)); do
+    PRINT $BOLD"
+     $CYAN CPU core ${cores[i]}:$WHITE ${freqs[i]} MHz"
+    done
+}
+
+#Function to calculate CPU usage percentage
+    calculate_cpu_usage() {
+        local prev_idle=$1
+        local prev_total=$2
+        local idle=$3
+        local total=$4
+
+        local idle_delta=$((idle - prev_idle))
+        local total_delta=$((total - prev_total))
+
+        # Avoid division by zero
+        if [[ $total_delta -eq 0 ]]; then
+            echo "0.00"
+            return
+        fi
+
+        local cpu_usage=$(bc -l <<< "scale=2; (1 - ($idle_delta /$total_delta)) * 100")
+        echo $cpu_usage
+}
+
+# Initial readings
+read_cpu_stats
+prev_idle=$idle
+prev_total=$((user + nice + system + idle + iowait + irq + softirq + steal))
+
+#fetch cpu load by adb
+    cpu_load_with_adb() {
+        read_cpu_stats
+        local cpu_usage=$(calculate_cpu_usage $prev_idle $prev_total $idle $((user + nice + system + idle + iowait + irq + softirq + steal)))
+        # Update previous values
+        prev_idle=$idle
+        prev_total=$((user + nice + system + idle + iowait + irq + softirq + steal))
+    PRINT $BOLD"
+     $CYAN Overall System Load:$WHITE $cpu_usage%"
+}
+
+#check status to run function by adb or without adb
+    check_status() {
+        if check_adb_port; then
+            connect_adb
+            cpu_load_with_adb
+        else
+    PRINT $BOLD"
+$YELLOW$BOLD INFO:$RESET Fetching CPU load via 'ps'"
+        cpu_load_without_adb
+    fi
+}
+
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA CPU Details:$RESET"
+        cpu_info
+       PRINT $BOLD"
+$UNDERLINE$MAGENTA CPU Load:$RESET"
+        check_status
+    PRINT "
+$YELLOW$BOLD INFO:$RESET Press 'l' for Live Monitoring...
+$YELLOW$BOLD INFO:$RESET Press 'Enter' or any key to Quit."
+        read -n 1 key
+        if [[ $key = "l" ]]; then
+            clear
+            while true; do
+                tput cup 0
+                tput el
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA CPU Load Live Monitoring:$RESET"
+    PRINT $BOLD"
+     $CYAN Model name: $WHITE $(echo "$model_names" | awk NR==1)
+     $CYAN Min MHz:    $WHITE $(echo "$min_max_values" | awk NR==2)    $(echo "$min_max_values" | awk NR==4)
+     $CYAN Max MHz:    $WHITE $(echo "$min_max_values" | awk NR==1)   $(echo "$min_max_values" | awk NR==3)"
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA CPU Cores:$RESET"
+                read_cpu_mhz
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA CPU Load:$RESET"
+                check_status
+    PRINT "
+$YELLOW$BOLD INFO:$RESET Press 'Enter' or any key to Quit."
+                sleep 1
+                read -n 1 -s -t 1 && break
+        done
+    fi
+}
+
+#Disk Usage
+disk() {
+    clear
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA Disk Usage:$RESET"
+    duf -only-fs sdcardfs
+    PRINT "
+$YELLOW$BOLD INFO:$RESET Press 'm' to get all disk usage...
+$YELLOW$BOLD INFO:$RESET Press 'Enter' or any key to Quit."
+    read -n 1 key
+    if [[ $key = "m" ]]; then
+        clear
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA Disk Usage(all):$RESET"
+        duf
+    PRINT "
+$YELLOW$BOLD INFO:$RESET Press 'Enter' or any key to Quit."
+    read -n 1 && break
+    fi
+}
 
 #info about android software
 androidinfo() {
@@ -128,8 +444,402 @@ $YELLOW INFO:$RESET Press 'Enter' or any key to Quit..."
     read -r
 }
 
+#wifi info
+wifi_info() {
+    termux_api_with_prompt_setup
+    local data=$(termux-wifi-connectioninfo)
+    local status=$(jq -r '.supplicant_state' <<< "$data")
+    local name=$(jq -r '.ssid' <<< "$data")
+    local hidden_state=$(jq -r '.ssid_hidden' <<< "$data")
+    local freq=$(jq -r '.frequency_mhz' <<< "$data")
+    local ip=$(jq -r '.ip' <<< "$data")
+    local mac_address=$(jq -r '.mac_address' <<< "$data")
+    local max_speed=$(jq -r '.link_speed_mbps' <<< "$data")
+
+    if [[ $status != "COMPLETED" ]]; then
+    PRINT $YELLOW "WiFi information not available."
+        return 1
+    fi
+    hidden_state=$( [[ "$hidden_state" == "true" ]] && echo "Yes" || echo "No" )
+
+    PRINT $BOLD"
+$UNDERLINE $MAGENTA WiFi Info:$RESET$BOLD
+     $CYAN WiFi Name:    $WHITE $name
+     $CYAN Hidden State: $WHITE $hidden_state
+     $CYAN Frequency:    $WHITE $freq MHz
+     $CYAN IP Address:   $WHITE $ip
+     $CYAN MAC Address:  $WHITE $mac_address
+     $CYAN Max Speed:    $WHITE $max_speed mbps"
+}
+
+#cellular info
+cellular_info() {
+    termux_api_with_prompt_setup
+    local data=$(termux-telephony-deviceinfo)
+    local network=$(jq -r '.network_operator_name' <<< "$data")
+    local type=$(jq -r '.network_type' <<< "$data")
+    local roaming=$(jq -r '.network_roaming' <<< "$data")
+    local data_enabled=$(jq -r '.data_enabled' <<< "$data")
+    local connection=$(jq -r '.data_state' <<< "$data")
+    local signal=$(jq -r '.signal_strength' <<< "$data")
+    local sim=$(jq -r '.sim_operator_name' <<< "$data")
+    local country=$(jq -r '.sim_country_iso' <<< "$data")
+    local state=$(jq -r '.sim_state' <<< "$data")
+    local dualsim=$(jq -r '.phone_count' <<< "$data")
+    local phone=$(jq -r '.phone_type' <<< "$data")
+
+    if [[ $state == "absent" ]]; then
+        echo "Cellular Network Info Not Available.."
+        return 1
+    fi
+
+    dualsim=$( [[ $dualsim -eq 2 ]] && echo "Yes" || echo "No" )
+    roaming=$( [[ $roaming == "true" ]] && echo "Enabled" || echo "Disabled" )
+    data_enabled=$( [[ $data_enabled == "true" ]] && echo "Enabled" || echo "Disabled" )
+
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA Cellular Info:$RESET$BOLD
+     $CYAN Network Operator:   $WHITE $network
+     $CYAN Network Type:       $WHITE $type
+     $CYAN Roaming:            $WHITE $roaming
+     $CYAN Data Enabled:       $WHITE $data_enabled
+     $CYAN Data Connection:    $WHITE $connection
+     $CYAN Signal Strength:    $WHITE $signal
+     $CYAN SIM Operator:       $WHITE $sim
+     $CYAN SIM Country ISO:    $WHITE $country
+     $CYAN SIM State:          $WHITE $state
+     $CYAN Dual SIM Support:   $WHITE $dualsim
+     $CYAN Phone Network Type: $WHITE $phone"
+}
+
+#Network Information
+netstats () {
+    clear
+    HOST_NAME=$(hostname)
+    EXTERNALIP=$(curl -4 ifconfig.me 2>/dev/null)
+    INTERNALIP=$(hostname -i)
+    local STATUS=$(
+    if ping -q -c2 google.com &>/dev/null; then
+        PRINT $BOLD $GREEN "You are Up :)"
+    else
+        PRINT $BOLD $RED "You are Down :("
+    fi)
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA Network Basic Info:$RESET$BOLD
+     $CYAN Host Name:         $WHITE $HOST_NAME
+     $CYAN External IP:       $WHITE $EXTERNALIP
+     $CYAN Internal IP:       $WHITE $INTERNALIP
+     $CYAN Connection Status: $WHITE $STATUS"
+     if check_termux_api; then 
+        PRINT "$BOLD
+$RED INFO:$RESET Some of data hidden, Please install termux-api to view properly...
+$YELLOW INFO:$RESET Press 'Enter' or any key to Quit..."
+    read -r
+     else
+        wifi_info
+        cellular_info
+     fi
+}
 
 
+#System Base Information like kernel uptime
+sysbaseinfo() {
+    clear
+    kn=$(uname -s)
+    kv=$(uname -v)
+    kr=$(uname -r)
+    ka=$(uname -m)
+    ko=$(uname -o)
+    uptime=$(uptime -p)
+    suptime=$(uptime -s)
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA Android Base Info:$RESET$BOLD
+     $CYAN Operating System:  $WHITE $ko
+     $CYAN Kernel Name:       $WHITE $kn
+     $CYAN Kernel Version:    $WHITE $kr
+     $CYAN Kernel Release:    $WHITE $kv
+     $CYAN System Architect:  $WHITE $ka
+     $CYAN System Uptime:     $WHITE $uptime
+     $CYAN System Since Boot: $WHITE $suptime"
+     PRINT "$BOLD
+$YELLOW INFO:$RESET Press 'Enter' or any key to Quit..."
+    read -r
+}
 
 
+#Network Speed Checker
+network_speed() {
+    clear
+    PRINT "
+$UNDERLINE$YELLOW Running SpeedTest, Please Wait..."
+    tmpfile=$(mktemp)
+    speedtest-go | grep -E "Download|Upload|Latency" > "$tmpfile" & 2>/dev/null
 
+    local pid=$!
+
+    spinner "Fetching innternet speed..." $pid
+
+    wait $pid
+
+    download=$(grep -oP "Download:\s+\K[0-9.]+" "$tmpfile")
+    upload=$(grep -oP "Upload:\s+\K[0-9.]+" "$tmpfile")
+    latency=$(grep -oP "Latency:\s+\K[0-9.]+" "$tmpfile")
+
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA Internet Speed Data:$RESET$BOLD
+     $CYAN Download speed: $WHITE $download Mbps
+     $CYAN Upload speed:   $WHITE $upload Mbps
+     $CYAN Latency:        $WHITE $latency ms"
+
+    rm "$tmpfile"
+    PRINT "$BOLD
+$YELLOW INFO:$RESET Press 'Enter' or any key to Quit..."
+    read -r
+}
+
+# battery function
+battery() {
+    clear
+    termux_api_with_prompt_setup
+    
+    get_batt_info() {
+        local data=$(termux-battery-status)
+        health=$(jq -r '.health' <<< "$data")
+        percentage=$(jq -r '.percentage' <<< "$data")
+        plugged=$(jq -r '.plugged' <<< "$data")
+        charging=$(jq -r '.status' <<< "$data")
+        temp=$(jq -r '.temperature' <<< "$data")
+        current=$(jq -r '.current' <<< "$data")
+    }
+    
+    print_batt_details() {
+    PRINT $BOLD"
+     $CYAN Percentage:  $WHITE $percentage%
+     $CYAN Health:      $WHITE $health
+     $CYAN Current:     $WHITE $current
+     $CYAN Temperature: $WHITE $temp
+     $CYAN Plugged:     $WHITE $plugged
+     $CYAN Charging:    $WHITE $charging"
+    }
+
+    get_batt_info
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA Battery Statistics:$RESET"
+    print_batt_details
+    PRINT "
+$YELLOW$BOLD INFO:$RESET Press 'l' for Live Monitoring...
+$YELLOW$BOLD INFO:$RESET Press 'Enter' or any key to Quit."
+    read -n 1 key
+    if [[ $key == "l" ]]; then
+        clear
+        while true; do
+            tput cup 0
+            tput el
+            get_batt_info
+            PRINT $BOLD"
+$UNDERLINE$MAGENTA Battery Live Monitoring:$RESET"
+            print_batt_details
+            PRINT "
+$YELLOW$BOLD INFO:$RESET Press 'Enter' or any key to Quit."
+            read -n 1 -s -t 1 && break
+        done
+    fi
+}
+
+# Sensors Info function
+get_sensor_info() {
+    clear
+    termux_api_with_prompt_setup
+
+    local data=$(termux-sensor -l)
+    local SENSORS=$(jq -r '.sensors[]' <<< "$data")
+    PRINT $BOLD"
+$UNDERLINE$MAGENTA Sensors List:$RESET
+        
+$WHITE$SENSORS
+
+$YELLOW$BOLD INFO:$RESET Press 'Enter' or any key to Quit."
+    read -r
+}
+
+# Version 
+version() {
+    PRINT $BOLD"Android System Information
+     $WHITE Version: 2.1.0"
+}
+
+#Help Function
+_help() {
+    PRINT $WHITE"$BOLD
+Usage:$RESET <commands>.
+
+A tool for displaying Android System Information
+$BOLD
+Flags:$RESET
+     -h, --help    Show this help.
+     -v, --version Print the version number
+$BOLD
+Commands:$RESET
+     android    Display Android System Overview.
+     disk       Show disk usage.
+     cpu        View CPU Information.
+     memory     Display memory usage.
+     sysbinfo   Provide system information.
+     netstats   Show network statistics.
+     speed      Measure internet Speed.
+     battery    Display battery statistics.
+     sensor     Get device sensors list.
+$BOLD
+Example:$RESET
+     sysinfo disk
+     "
+}
+
+netstat_help() {
+    PRINT $WHITE"$BOLD
+Usage:$RESET sysinfo netstats [<options> ].
+$BOLD
+Flags:$RESET
+     --wifi     - Show Wi-Fi connection Information if available.
+     --cellular - Show cellular connection Information if available.
+     --help     - Shows this Help.
+$BOLD
+Example:$RESET
+     sysinfo netstats --wifi
+     "
+}
+
+#check adb status
+ADB_STATUS=$(
+if check_adb_port; then
+    PRINT "$BOLD$GREEN CONNECTED $RESET"
+else
+    PRINT "$BOLD$RED DIS-CONNECTED $RESET"
+fi)
+
+#check termux-api status
+TERMUX_API_STATUS=$(
+if check_termux_api; then
+    PRINT "$BOLD$RED NOT-INSTALLED"
+else
+    PRINT "$BOLD$GREEN INSTALLED"
+fi)
+
+#check script update status
+UPDATE_STATUS=$(
+if monitor_update; then
+    PRINT "$BOLD$GREEN AVAILABLE"
+else
+    PRINT "$BOLD$BLUE UP-TO-DATE"
+fi)
+
+# Display menu function
+display_menu() {
+    PRINT "
+$BOLD$BLUE $(figlet -c -t -f term "SYSTEM INFORMATION v2.0")
+
+$BOLD$YELLOW $(figlet -c -t -f term "Github: https://github.com/Aj-Seven/Android-Sysinfo")
+
+$BOLD$CYAN $(figlet -c -t -f digital "Author: @Aj-Seven")
+  
+        $BOLD$MAGENTA UPDATES:$RESET$UPDATE_STATUS | $BOLD$MAGENTA ADB:$RESET$ADB_STATUS
+
+        $BOLD$MAGENTA TERMUX-API:$RESET$TERMUX_API_STATUS
+
+
+$UNDERLINE Select the options below:$RESET$BOLD$WHITE
+        01) Android Info
+        02) Disk Fetch
+        03) CPU Info
+        04) Memory Fetch
+        05) System BaseInfo
+        06) Network Stats
+        07) Internet Speed
+        08) Battery Stats
+        09) Sensor Info
+        10) Check Updates
+        00) Quit\n"
+}
+
+main() {
+    clear
+    display_menu    
+    read opt
+    case $opt in
+        1) androidinfo ;;
+        2) disk ;;
+        3) cpu ;;
+        4) memusage ;;
+        5) sysbaseinfo ;;
+        6) netstats ;;
+        7) network_speed ;;
+        8) battery;;
+        9) get_sensor_info;;
+        10) check_update ;;
+        0)  PRINT $RED "Exiting...:)"
+            sleep 0.5s;
+            exit 0;
+            ;;
+        *)
+            PRINT $CYAN "Error Selection. Try Again..."
+            ;;
+    esac
+}
+
+
+# Set the default PREFIX if not provided
+if [ -z "$PREFIX" ]; then
+    PREFIX="/data/data/com.termux/files/usr/"
+fi
+
+if [ $# -eq 0 ]; then
+    command clear
+    while true; do
+        main
+    done
+fi
+
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -v|--version) version;;
+        android) androidinfo;;
+        disk) disk;;
+        cpu) cpu;;
+        memory) memusage;;
+        sysbinfo) sysbaseinfo;;
+        netstats)
+            case "$2$3" in
+                "--wifi--cellular" | "--cellular--wifi")
+                    wifi_info
+                    cellular_info
+                    ;;
+                "--wifi")
+                    wifi_info
+                    ;;
+                "--cellular")
+                    cellular_info
+                    ;;
+                "--help")
+                    netstat_help
+                    ;;
+                *)
+                    if [ -z "$2" ] && [ -z "$3" ]; then
+                        netstats
+                    else
+                        netstat_help
+
+                        PRINT $RED $BOLD"Error:$RESET Unknown Option '$2$3'"
+                    fi
+            esac
+            break
+            ;;
+        speed) network_speed;;
+        battery) battery;;
+        sensor) get_sensor_info;;
+        -h|--help) _help ;;
+        *) _help
+            PRINT $RED $BOLD"Error:$RESET Unknown Option '$1'"
+            exit 1;;
+    esac
+    shift
+done
