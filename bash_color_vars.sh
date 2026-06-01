@@ -5,6 +5,9 @@
 # ShellCheck: Disable SC2016
 # shellcheck disable=SC2016
 
+# ShellCheck: Disable SC2034
+# shellcheck disable=SC2034  # Unused variables left for readability
+
 # Reset
 Color_Off='\033[0m'       # Text Reset
 Reset='\033[0m'		  # Text Reset (Same as Color_Off)
