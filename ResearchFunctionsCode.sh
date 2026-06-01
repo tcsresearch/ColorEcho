@@ -55,7 +55,7 @@ print_memory_details() {
      $CYAN Buffer+Cache Memory:    $WHITE $BUFFCACHE_MEM MB
      $CYAN Free Buff+Cache Memory: $WHITE $FREE_BUFF_MEM MB
      $CYAN Percentage Usage:       $WHITE $PERCENT_USED_MEM"
-
+}
 
 #CPU Information
 cpu() {
