@@ -38,7 +38,7 @@ spinner() {
     local spinstr='⣾⣽⣻⢿⡿⣟⣯⣷'
     local i=0
     tput civis
-    while ps -p $pid > /dev/null; do
+    while ps -p "$pid" > /dev/null; do
         local color=${colors[i++ % ${#colors[@]}]}
         printf "\e[${color}m%s\e[0m" "${spinstr:i++%${#spinstr}:1}"
         sleep $delay
