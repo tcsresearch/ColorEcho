@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# ShellCheck: Disable SC1090
+# shellcheck source=/dev/null
+
+# ShellCheck: Disable SC2016
+# shellcheck disable=SC2016
 
 # Reset
 Color_Off='\033[0m'       # Text Reset
