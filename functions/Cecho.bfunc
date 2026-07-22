@@ -1,8 +1,8 @@
 #/bin/bash
 ## Cecho (Formerly NewCecho) with added colors and misc. fixes.
-# Last Updated: Jan 30, 2026
+# Last Updated: July 22, 2026
 
-Cecho_Version="26.01"
+Cecho_Version="26.07"
 
 # TODO: Determine regular vs bold, e.g: 0;31 vs 1;31
 #	Add Underline/Background/High_Intensity/Bold_High_Intensity/High_Intensity_Backgrounds
@@ -33,7 +33,7 @@ cecho() {
                 
 	#### Default case.
              #   *) local text="$1"
-             *) local text="Usage: advcecho <color> <text> - text must be inside double quotes."
+             *) local text="Usage: cecho <color> <text> - text must be inside double quotes."
         esac
         [ -z "$text" ] && local text="$color$2${code}0m"
         echo -e "$text"
@@ -41,17 +41,17 @@ cecho() {
 
 ### Test Display - WORKS!! ###
 function DisplayTest() {
-	advcecho b "This is blue"
-	advcecho r "This is red"
-	advcecho yellow "This is yellow"
-	advcecho white "This is white"
-	advcecho lightgray "This is lightgray"
-	advcecho darkgray "This is darkgray"
+	cecho b "This is blue"
+	cecho r "This is red"
+	cecho yellow "This is yellow"
+	cecho white "This is white"
+	cecho lightgray "This is lightgray"
+	cecho darkgray "This is darkgray"
 }
 
 ### Usage ###
 function Usage() {
-	echo "advcecho <color> <text>"
+	echo "cecho <color> <text>"
 	echo "Where <color> is one of black/red/lightred/green/lightgreen/brownorange/yellow"
 	echo "       blue/lightblue/purple/lightpurple/cyan/lightcyan/white/lightgray/darkgray"
 	echo "       and <text> is what you want to be echoed."
