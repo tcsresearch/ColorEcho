@@ -2,8 +2,8 @@
 <hr>
 <ul>
     --- Implementations ---
-    <li> Cecho - Current Cecho implementation with additional colors and aliases added. </li>
-    <li> AdvCecho - NewCecho with white color added and grey as an alias of gray. </li>
+    <li> Cecho - Current Cecho implementation with additional colors (incl. lightgrey/darkgrey, etc.) and aliases added. </li>
+    <li> AdvCecho (DEPRICATED) - NewCecho with white color added and grey as an alias of gray. </li>
     <li> AdvCecho_Bold - AdvCecho Bold. </li>
     <li> AdvCecho_Underline - AdvCecho Underline. </li>
     <li> AdvCecho_Background - AdvCecho Background. </li>
