@@ -19,6 +19,10 @@
 <hr>
 
 <p>
+Update 10/24/2026: Added SuperEcho.sh and SuperEecho-v2.sh. [TESTING]. <br>
+ </p>
+
+<p>
 Update 01/30/2026: Minor improvements to Cecho.bfunc, incl. new colors. [WORKING]. <br>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Retired NewCecho; Renamed AdvCecho as Cecho. <br>
 </p>
