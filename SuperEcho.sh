@@ -97,3 +97,20 @@ if [ -n "$FORMAT_START" ]; then
 else
   printf "%s${NEWLINE}" "$MESSAGE"
 fi
+
+#########################################
+# Examples #                            #
+#########################################
+
+# Bold green text:
+  #./custom_echo.sh -c green -s bold "Success: Task completed."
+
+# Underlined text with a red background:
+  # ./custom_echo.sh -b red -s underline "CRITICAL ERROR"
+
+# No newline (appending messages together):
+ # ./custom_echo.sh -n -c yellow "Loading... "
+ # ./custom_echo.sh -c green "[DONE]"
+
+# Bypass all colors entirely using -x:
+  # ./custom_echo.sh -x -c red -s bold "This will output as plain unformatted text."
