@@ -25,6 +25,7 @@ function EnableColors() {
   export brightcyan="$(tput setaf 14)"
   export brightwhite="$(tput setaf 15)"
   export reset="$(tput sgr0)" # Reset to default 
+  echo "Colors Enabled Successfully."
 }
 
 function DisableColors() {
@@ -52,6 +53,7 @@ function DisableColors() {
   export -n brightcyan="$(tput setaf 14)"
   export -n brightwhite="$(tput setaf 15)"
   export -n reset="$(tput sgr0)" # Reset to default 
+  echo "Colors Disabled Successfully."
 }
 
 
@@ -80,4 +82,5 @@ function UnsetColors() {
   unset brightcyan
   unset brightwhite
   unset reset 
+  echo "Colors Unset Successfully."
 }
