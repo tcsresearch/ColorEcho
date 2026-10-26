@@ -19,6 +19,11 @@
 <hr>
 
 <p>
+Update 10/26/2026: Added ColorTerm-Setup.sh, ColorTerm-Setup-2.sh, ColorTerm-Setup.bfunc, and Cecho-Wrapper.sh.   [TESTING] <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Renamed SuperEcho-v2.sh as LogEcho.sh and created LogEcho-v2.sh. [TESTING] <br>
+ </p>
+
+<p>
 Update 10/24/2026: Added SuperEcho.sh and SuperEecho-v2.sh. [TESTING]. <br>
  </p>
 
