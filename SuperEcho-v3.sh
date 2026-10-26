@@ -38,7 +38,7 @@ usage() {
   echo "  -s <style>    Text style (bold, underline)"
   echo "  -n            Suppress trailing newline"
   echo "  -x            Disable all color/formatting entirely"
-  exit 1
+  return 1
 }
 
   # Dynamic argument parsing internal to this function
