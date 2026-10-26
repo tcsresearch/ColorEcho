@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-# Define standard ANSI color codes
-RED_CODE="\033[0;31m"
-GREEN_CODE="\033[0;32m"
-NC_CODE="\033[0m" # No Color
+# Get the directory where this script lives to find the helper file
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
-# Initialize color variables (Default: enabled)
-RED=$RED_CODE
-GREEN=$GREEN_CODE
-NC=$NC_CODE
+# Source the color setup functions
+if [ -f "$SCRIPT_DIR/ColorTerm-Setup.bfunc" ]; then
+    source "$SCRIPT_DIR/ColorTerm-Setup.bfunc"
+else
+    echo "Error: $SCRIPT_DIR/ColorTerm-Setup.bfunc not found." >&2
+    exit 1
+fi
 
-# Function to display usage instructions
 usage() {
     echo "Usage: $0 [EnableColors | DisableColors | UnsetColors]"
     exit 1
@@ -21,38 +21,17 @@ if [ $# -eq 0 ]; then
     usage
 fi
 
-# Parse the color options
+# Dynamically call the function if it matches our allowed list
 case "$1" in
-    EnableColors)
-        # Re-assign or confirm ANSI codes are active
-        RED=$RED_CODE
-        GREEN=$GREEN_CODE
-        NC=$NC_CODE
-        echo -e "${GREEN}Colors have been explicitly enabled.${NC}"
+    EnableColors|DisableColors|UnsetColors)
+        # Call the function directly by the name provided in the argument
+        "$1"
         ;;
-        
-    DisableColors)
-        # Strip the variables of their ANSI codes (Print as plain text)
-        RED=""
-        GREEN=""
-        NC=""
-        echo "Colors have been disabled."
-        ;;
-        
-    UnsetColors)
-        # Completely remove/unset the variables from the shell environment
-        unset RED
-        unset GREEN
-        unset NC
-        echo "Color variables have been completely unset."
-        ;;
-        
     *)
         echo "Invalid option: $1"
         usage
         ;;
 esac
 
-# Example output to demonstrate the state of the variables
-# (Note: if UnsetColors was used, these will print nothing extra)
-echo -e "${RED}This text is conditionally red.${NC}"
+# Example output to demonstrate the current state
+# echo -e "${RED}This text is conditionally red.${NC}"
