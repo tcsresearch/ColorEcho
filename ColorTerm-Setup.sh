@@ -1,0 +1,83 @@
+# ColorTerm-Setup.sh
+# This adds export for all 16 colors.
+
+function EnableColors() {
+# Use the export command to turn local shell variables into environment variables.
+
+# Define Our Colors
+# Define color variables WITH enclosed quotes.
+  export black="$(tput setaf 0)"
+  export red="$(tput setaf 1)"
+  export green="$(tput setaf 2)"
+  export yellowbrown="$(tput setaf 3)"
+  export blue="$(tput setaf 4)"
+  export magenta="$(tput setaf 5)"
+  export cyan="$(tput setaf 6)"
+  export whitelightgray="$(tput setaf 7)"
+  export whitelightgrey="$(tput setaf 7)"
+  export brightblack_darkgray="$(tput setaf 8)"
+  export brightblack_darkgrey="$(tput setaf 8)"
+  export brightred="$(tput setaf 9)"
+  export brightgreen="$(tput setaf 10)"
+  export brightyellow="$(tput setaf 11)"
+  export brightblue="$(tput setaf 12)"
+  export brightmagenta="$(tput setaf 13)"
+  export brightcyan="$(tput setaf 14)"
+  export brightwhite="$(tput setaf 15)"
+  export reset="$(tput sgr0)" # Reset to default 
+}
+
+function DisableColors() {
+# Keep the variable, but undo the "export"
+# If you want to keep the variable and its value active in your current terminal, but you want to stop passing it to child processes or scripts, use the -n flag:
+
+# Define Our Colors
+# Define color variables WITH enclosed quotes.
+  export -n black="$(tput setaf 0)"
+  export -n red="$(tput setaf 1)"
+  export -n green="$(tput setaf 2)"
+  export -n yellowbrown="$(tput setaf 3)"
+  export -n blue="$(tput setaf 4)"
+  export -n magenta="$(tput setaf 5)"
+  export -n cyan="$(tput setaf 6)"
+  export -n whitelightgray="$(tput setaf 7)"
+  export -n whitelightgrey="$(tput setaf 7)"
+  export -n brightblack_darkgray="$(tput setaf 8)"
+  export -n brightblack_darkgrey="$(tput setaf 8)"
+  export -n brightred="$(tput setaf 9)"
+  export -n brightgreen="$(tput setaf 10)"
+  export -n brightyellow="$(tput setaf 11)"
+  export -n brightblue="$(tput setaf 12)"
+  export -n brightmagenta="$(tput setaf 13)"
+  export -n brightcyan="$(tput setaf 14)"
+  export -n brightwhite="$(tput setaf 15)"
+  export -n reset="$(tput sgr0)" # Reset to default 
+}
+
+
+
+function UnsetColors() {
+# To completely wipe the variable and its value out of your current terminal session, use the unset command:
+
+# Define Our Colors
+# Define color variables WITH enclosed quotes.
+  unset black
+  unset red
+  unset green
+  unset yellowbrown
+  unset blue
+  unset magenta
+  unset cyan
+  unset whitelightgray
+  unset whitelightgrey
+  unset brightblack_darkgray
+  unset brightblack_darkgrey
+  unset brightred
+  unset brightgreen
+  unset brightyellow
+  unset brightblue
+  unset brightmagenta
+  unset brightcyan
+  unset brightwhite
+  unset reset 
+}
