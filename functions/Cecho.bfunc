@@ -1,4 +1,4 @@
-#/bin/env bash
+#!/bin/env bash
 ## Cecho (Formerly NewCecho) with added colors and misc. fixes.
 # Last Updated: Oct 27, 2026
 
