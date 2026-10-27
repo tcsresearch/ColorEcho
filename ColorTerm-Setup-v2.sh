@@ -4,7 +4,7 @@
 # This adds export for all 16 colors.
 
 
-function DefineColors() {
+function Define_ColorLoop() {
   # List of color variable names
   ColorLoop=(
     black
@@ -26,7 +26,7 @@ function DefineColors() {
   )
 }
 
-function EnableColors() {
+function Define_ColorVars() {
 # Use the export command to turn local shell variables into environment variables.
 
 # Define Our Colors
@@ -51,10 +51,49 @@ function EnableColors() {
   brightwhite="$(tput setaf 15)"
   reset="$(tput sgr0)" # Reset to default 
   Cecho_Enabled=1
-  echo "Colors Enabled Successfully."
+}
+
+function ExportColors() {
+  for color in "${ColorLoop[@]}"; do
+  # Indirectly expand the variable value using ${!c}
+    # echo -e "${!c}This is color: $c${reset}"
+    export "$color"
+  done
+  echo "Colors Exported Successfully."
+}
+
+function UnExportColors() {
+  for color in "${ColorLoop[@]}"; do
+  # Indirectly expand the variable value using ${!c}
+    # echo -e "${!c}This is color: $c${reset}"
+    export -n "$color"
+  done
+  echo "Colors UnExported Successfully."
+}
+
+function UnSetColors() {
+  for color in "${ColorLoop[@]}"; do
+  # Indirectly expand the variable value using ${!c}
+    # echo -e "${!c}This is color: $c${reset}"
+    unset "$color"
+  done
+  echo "Colors UnExported Successfully."
+}
+
+function EnableColors() {
+  DefineColorLoop
+  Define_ColorVars
+  ExportColors
 }
 
 function DisableColors() {
+  UnExportColors
+  UnSetColors
+}
+
+
+
+function DisableColors_Old() {
 # Keep the variable, but undo the "export"
 # If you want to keep the variable and its value active in your current terminal, but you want to stop passing it to child processes or scripts, use the -n flag:
 
@@ -85,7 +124,7 @@ function DisableColors() {
 
 
 
-function UnsetColors() {
+function UnsetColors_Old() {
 # To completely wipe the variable and its value out of your current terminal session, use the unset command:
 
 # Define Our Colors
@@ -114,19 +153,18 @@ function UnsetColors() {
 }
 
 
-function ExportColors() {
-  for color in "${ColorLoop[@]}"; do
-  # Indirectly expand the variable value using ${!c}
-    # echo -e "${!c}This is color: $c${reset}"
-    export "$color"
-  done
-}
+
 
 
 usage() {
     echo "Usage: $0 [EnableColors | DisableColors | UnsetColors]"
     exit 1
 }
+
+
+###################################################################################################
+# Main Program #                                                                                  #
+###################################################################################################
 
 # Ensure at least one argument is passed
 if [ $# -eq 0 ]; then
