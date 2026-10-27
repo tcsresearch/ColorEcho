@@ -23,7 +23,8 @@ DisplayResults() {
 }
 
 DisplayResults2() {
-if [ "$?" == "0" ]; then
+# if [ "$?" == "0" ]; then
+if [ "$?" -eq 0 ]; then # Fixes SC2181.
         echo -e "${GREEN}String ${SearchString} exists in README file${RESET}"
 else
         echo -e "${RED}String ${SearchString} does NOT exist in README file${RESET}"
@@ -31,7 +32,8 @@ fi
 }
 
 DisplayResults3() {
-	if [ "$?" == "0" ]; then
+	# if [ "$?" == "0" ]; then
+	if [ "$?" -eq 0 ]; then # Fixes SC2181.
 		        echo -e "${GREEN}String $SearchString exists in README file${RESET}"
 		else
 		        echo -e "${RED}String $SearchString does NOT exist in README file${RESET}"
@@ -40,7 +42,8 @@ DisplayResults3() {
 
 DisplayResults4() {
 	echo " "
-	 if [ "$?" == "0" ]; then
+	 # if [ "$?" == "0" ]; then
+	 if [ "$?" -eq 0 ]; then # Fixes SC2181.
 		echo -e "${GREEN}String ${WHITE}$SearchString${GREEN} exists in file ${FILE}.${RESET}"
 	else
 		echo -e "${RED}String ${WHITE}$SearchString${RED} does NOT exist in file ${FILE}.${RESET}"
