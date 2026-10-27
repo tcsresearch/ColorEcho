@@ -1,10 +1,14 @@
+#!/bin/env bash
 # cecho.sh - same as function but testing as non-function
 
-#/bin/bash
-## Cecho (Formerly NewCecho) with added colors and misc. fixes.
-# Last Updated: July 22, 2026
 
-Cecho_Version="26.07"
+## Cecho (Formerly NewCecho) with added colors and misc. fixes.
+# Last Updated: Oct 27, 2026
+
+# shellcheck source=/dev/null
+# shellcheck disable=SC2221,SC2222
+
+Cecho_Version="26.10"
 
 # TODO: Determine regular vs bold, e.g: 0;31 vs 1;31
 #	Add Underline/Background/High_Intensity/Bold_High_Intensity/High_Intensity_Backgrounds
