@@ -15,10 +15,11 @@ RESET='\033[0m'
 # grep -iw $SearchString2 $FILE2
 
 DisplayResults() {
-	if [ "$?" == "0" ]; then
-		        echo -e "${GREEN}String exists in README file${RESET}"
-		else
-			        echo -e "${RED}String does NOT exist in README file${RESET}"
+	# if [ "$?" == "0" ]; then
+	if [ "$?" -eq 0 ]; then # Fixes SC2181.
+		    echo -e "${GREEN}String exists in README file${RESET}"
+	else
+		    echo -e "${RED}String does NOT exist in README file${RESET}"
 	fi
 }
 
@@ -34,9 +35,9 @@ fi
 DisplayResults3() {
 	# if [ "$?" == "0" ]; then
 	if [ "$?" -eq 0 ]; then # Fixes SC2181.
-		        echo -e "${GREEN}String $SearchString exists in README file${RESET}"
-		else
-		        echo -e "${RED}String $SearchString does NOT exist in README file${RESET}"
+		    echo -e "${GREEN}String $SearchString exists in README file${RESET}"
+	else
+	        echo -e "${RED}String $SearchString does NOT exist in README file${RESET}"
 	fi
 }
 
