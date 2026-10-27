@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# shellcheck source=/dev/null
+
 # Get the directory where this script lives to find the helper file
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
