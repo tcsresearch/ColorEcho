@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2034  # Unused variables left for readability
+# shellcheck disable=SC2034,SC2329  # Unused variables left for readability
 
 # Now compatible with BASH and Zsh.  Should fix SC2059.
 
