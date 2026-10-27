@@ -1,3 +1,7 @@
+#!/bin/env bash
+
+# shellcheck source=/dev/null
+
 cecho() {
     # Usage: cecho [-n] [style1] [style2] ... "Your text message"
     
@@ -11,7 +15,7 @@ cecho() {
 
     # The last remaining argument is ALWAYS the text string
     local text="${*:$#}" 
-    local count=$(($# - 1))
+    local count="$(($# - 1))"
     local format=""
 
     # Only apply styles if Cecho_Enabled is 1 AND writing to a terminal
