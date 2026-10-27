@@ -49,7 +49,8 @@ spinner() {
 } 
 
 print_memory_details() {
-    PRINT $BOLD"
+    # PRINT $BOLD"
+    PRINT "$BOLD"" # Fixes SC2086.
      $CYAN Total Memory:           $WHITE $TOTAL_MEM MB
      $CYAN Used Memory:            $WHITE $TOTAL_USED_MEM MB
      $CYAN Available Memory:       $WHITE $AVAILABLE_MEM MB
@@ -87,7 +88,8 @@ cpu_info() {
     # Number of CPUs
     num_cpus=$(echo "$model_names" | wc -l)
 
-    PRINT "$BOLD
+    # PRINT "$BOLD
+    PRINT "$BOLD"" # Fixes SC2086.
      $CYAN Name:           $WHITE $name
      $CYAN Model:          $WHITE $model
      $CYAN Architecture:   $WHITE $arch
@@ -111,7 +113,8 @@ $WHITE$vulnerabilities"
 #info about android software
 androidinfo() {
     clear
-    PRINT $BOLD"
+    # PRINT $BOLD"
+    PRINT "$BOLD"" # Fixes SC2086.
 $UNDERLINE$MAGENTA Android Software Info:$RESET$BOLD
      $CYAN Brand:           $WHITE $(getprop ro.product.brand)
      $CYAN Manufacturer:    $WHITE $(getprop ro.product.manufacturer)
