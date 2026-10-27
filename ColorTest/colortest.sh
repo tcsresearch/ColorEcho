@@ -15,7 +15,8 @@ grep -iw supersillystring README
 grep -iw $SearchString $FILE
 
 DisplayResults() {
-if [ "$?" == "0" ]; then
+# if [ "$?" == "0" ]; then
+if [ "$?" -eq 0 ]; then # Fixes SC2181.
         echo -e "${GREEN}String exists in README file${RESET}"
 else
         echo -e "${RED}String does NOT exist in README file${RESET}"
