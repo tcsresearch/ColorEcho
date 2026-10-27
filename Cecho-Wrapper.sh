@@ -47,5 +47,4 @@ cecho() {
         else
             printf "%s" "$text"
         fi
-    fi
-}
+    }
