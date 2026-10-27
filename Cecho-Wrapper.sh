@@ -40,7 +40,7 @@ cecho() {
         else
             printf "%s%s%s" "$format" "$text" "$_C_Reset"
         fi
-    else
+    
         # Fallback: Plain text only
         if [ "$newline" = true ]; then
             printf "%s\n" "$text"
