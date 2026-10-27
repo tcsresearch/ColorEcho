@@ -3,6 +3,7 @@
 # ColorTerm-Setup.sh
 # This adds export for all 16 colors.
 
+# shellcheck disable=SC2163
 
 function Define_ColorLoop() {
   # List of color variable names
