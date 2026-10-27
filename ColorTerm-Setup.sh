@@ -3,6 +3,29 @@
 # ColorTerm-Setup.sh
 # This adds export for all 16 colors.
 
+
+function DefineColors() {
+  # List of color variable names
+  ColorLoop=(
+    black
+    red
+    green
+    yellowbrown
+    blue
+    magenta
+    cyan
+    whitelightgray
+    brightblack_darkgray
+    brightred
+    brightgreen
+    brightyellow
+    brightblue
+    brightmagenta
+    brightcyan
+    brightwhite
+  )
+}
+
 function EnableColors() {
 # Use the export command to turn local shell variables into environment variables.
 
