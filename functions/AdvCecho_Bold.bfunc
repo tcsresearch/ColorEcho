@@ -1,7 +1,10 @@
-#/bin/bash
+#/bin/env bash
 ## AdvCecho_Bold is NewCecho with added colors.
 # TODO: Determine regular vs bold, e.g: 0;31 vs 1;31
 #	Add Underline/Background/High_Intensity/Bold_High_Intensity/High_Intensity_Backgrounds
+
+# shellcheck source=/dev/null
+# shellcheck disable=SC2221,SC2222
 
 advcecho_Bold() {
         local code="\033["
