@@ -5,7 +5,7 @@
 # source bash_color_vars.sh
 
 DisplayResults() {
-	if [ "$?" == "0" ]; then
+	if [ "$?" -eq 0 ]; then # Fixes SC2181.
 		        echo -e "${Green}String exists in README file${Reset}"
 		else
 			        echo -e "${Red}String does NOT exist in README file${Reset}"
@@ -13,7 +13,7 @@ DisplayResults() {
 }
 
 DisplayResults2() {
-if [ "$?" == "0" ]; then
+if [ "$?" -eq 0 ]; then # Fixes SC2181.
         echo -e "${Green}String ${SearchString} exists in README file${Reset}"
 else
         echo -e "${Red}String ${SearchString} does NOT exist in README file${Reset}"
@@ -21,7 +21,7 @@ fi
 }
 
 DisplayResults3() {
-	if [ "$?" == "0" ]; then
+	if [ "$?" -eq 0 ]; then # Fixes SC2181.
 		        echo -e "${Green}String $SearchString exists in README file${Reset}"
 		else
 		        echo -e "${Red}String $SearchString does NOT exist in README file${Reset}"
@@ -30,7 +30,7 @@ DisplayResults3() {
 
 DisplayResults4() {
 	echo " "
-	 if [ "$?" == "0" ]; then
+	 if [ "$?" -eq 0 ]; then # Fixes SC2181.
 		echo -e "${Green}String ${WHITE}$SearchString${Green} exists in file ${FILE}.${Reset}"
 	else
 		echo -e "${Red}String ${WHITE}$SearchString${Red} does NOT exist in file ${FILE}.${Reset}"
