@@ -81,7 +81,7 @@ function UnSetColors() {
 }
 
 function EnableColors() {
-  DefineColorLoop
+  Define_ColorLoop
   Define_ColorVars
   ExportColors
 }
