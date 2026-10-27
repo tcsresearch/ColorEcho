@@ -20,11 +20,19 @@ cecho() {
 
     # Only apply styles if Cecho_Enabled is 1 AND writing to a terminal
     if [ "${Cecho_Enabled:-0}" -eq 1 ] && [ -t 1 ]; then
-        # Loop through all styling arguments except the last one
+    # Loop through all styling arguments except the last one
         for ((i=1; i<=count; i++)); do
-            local style_var="_C_${${!i}}"
-            format+="${!style_var}"
+            # 1. Get the value of the positional parameter (e.g., "RED")
+                local current_arg="${!i}"
+        
+            # 2. Construct the name of the target style variable (e.g., "_C_RED")
+                local style_name="_C_${current_arg}"
+        
+            # 3. Pull the style value indirectly using the constructed name
+                format+="${!style_name}"
         done
+    fi
+
         
         # Output styled text and force a clean formatting reset
         if [ "$newline" = true ]; then
