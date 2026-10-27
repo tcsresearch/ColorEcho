@@ -49,7 +49,7 @@ function Cecho_AliasOn() {
 	alias echo="cecho"
 	Cecho_Alias_Status="ENABLED" # Set status variable to Enabled.
 	echo "Cecho as replacement for echo is ENABLED."
-	echo "To disable, run 'Cecho_AliasOff'
+	echo "To disable, run 'Cecho_AliasOff' "
 }
 
 ### Revert back to normal echo operation without Cecho. ###
@@ -57,7 +57,7 @@ function Cecho_AliasOff() {
 	alias echo="echo"
 	Cecho_Alias_Status="DISABLED" # Set status variable to Disabled.
 	echo "Cecho as replacement for echo is DISABLED."
-	echo "To disable, run 'Cecho_AliasOn'
+	echo "To disable, run 'Cecho_AliasOn' "
 }
 
 
